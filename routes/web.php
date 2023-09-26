@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
-use App\Models\Category;
+use App\Http\Controllers\CategoryAdminController;
+use App\Http\Controllers\ItemAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,8 +29,8 @@ Route::prefix(('/user'))->name('user.')->group(function() {
 });
 
 Route::prefix('/admin')->name('admin.')->group(function() {
-	Route::resource('items', ItemController::class)->except(['destroy', 'show']);
-	Route::get('/items/{item}/delete',[ItemController::class, 'destroy']);
-	Route::resource('categories', CategoryController::class)->except(['destroy']);
-	Route::get('/categories/{category}/delete', [CategoryController::class, 'destroy']);
+	Route::resource('items', ItemAdminController::class)->except(['destroy', 'show']);
+	Route::get('/items/{item}/delete',[ItemAdminController::class, 'destroy']);
+	Route::resource('categories', CategoryAdminController::class)->except(['destroy']);
+	Route::get('/categories/{category}/delete', [CategoryAdminController::class, 'destroy']);
 });
