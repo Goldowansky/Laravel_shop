@@ -11,7 +11,11 @@
 				<p>{{ $item->category->name }}
 				<p>{{ $item->description }}
                 <p><a href="/admin/items/{{ $item->id }}/edit">редагувати</a>
-                <p><a href="/admin/items/{{ $item->id }}/delete">видалити</a>
+                <form action="/admin/items/{{ $item->id}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">видалити</button>
+                </form>
                 </li>
         @endforeach
     </ul>

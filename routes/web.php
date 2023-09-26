@@ -29,8 +29,6 @@ Route::prefix(('/user'))->name('user.')->group(function() {
 });
 
 Route::prefix('/admin')->name('admin.')->group(function() {
-	Route::resource('items', ItemAdminController::class)->except(['destroy', 'show']);
-	Route::get('/items/{item}/delete',[ItemAdminController::class, 'destroy']);
-	Route::resource('categories', CategoryAdminController::class)->except(['destroy']);
-	Route::get('/categories/{category}/delete', [CategoryAdminController::class, 'destroy']);
+	Route::resource('items', ItemAdminController::class)->except(['show']);
+	Route::resource('categories', CategoryAdminController::class);
 });
