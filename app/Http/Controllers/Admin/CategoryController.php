@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use App\Models\Item;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
-class CategoryAdminController extends Controller
+class CategoryController extends Controller
 {
     public function index()
     {
@@ -17,23 +19,18 @@ class CategoryAdminController extends Controller
     
     public function show(Category $category)
     {
-        $items = Item::where('category_id',$category->id)->get();
-        $categoryName = $category->name;
-
-        return view('categories.admin.show', compact('categoryName'), compact('items'));
+        return view('categories.admin.show', compact('category'));
     }
 
     public function create()
     {
         return view('categories.admin.create');
     }
-
-    public function store(Request $request)
+    
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        $category = new Category();
-        $category->name = $request->input('name');
-        $category->save();
-
+        Category::create($request->validated());
+        
         return redirect()->route('admin.categories.index');
     }
 
@@ -42,21 +39,15 @@ class CategoryAdminController extends Controller
         return view('categories.admin.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category->update([
-            'name' => $request->input('name'),
-        ]);
+        $category->update($request->validated());
         
         return redirect()->route('admin.categories.index', $category);
     }
 
     public function destroy(Category $category)
     {
-        $items = Item::where('category_id',$category->id)->get();
-        foreach ($items as $item) {
-            $item->delete();
-        }
         $category->delete();
 
         return redirect()->route('admin.categories.index');

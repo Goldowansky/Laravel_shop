@@ -10,8 +10,12 @@
             	<li>{{ $item->name }}
 				<p>{{ $item->category->name }}
 				<p>{{ $item->description }}
-                <p><a href="/admin/item/{{ $item->id }}/edit">редагувати</a>
-                <p><a href="/admin/item/{{ $item->id }}/remove">видалити</a>
+                <p><a href="{{ route('admin.items.edit', $item) }}">редагувати</a>
+                <form action="{{ route('admin.items.destroy', $item) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">видалити</button>
+                </form>
                 </li>
         @endforeach
     </ul>

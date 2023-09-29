@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Modification extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'label',
+        'price',
+        'item_id',
     ];
 
-    public function items()
+    public function item()
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsTo(Item::class);
     }
 }

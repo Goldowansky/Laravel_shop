@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Редагувати категорію</h1>
-	<form action="/admin/categories/{{ $category->id }}" method="POST">
+	<form action="{{ route('admin.categories.update', $category)}}" method="POST">
         @csrf
         @method('PUT')
 

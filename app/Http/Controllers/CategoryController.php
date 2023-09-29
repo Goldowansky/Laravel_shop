@@ -16,9 +16,6 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        $items = Item::where('category_id',$category->id)->get();
-        $categoryName = $category->name;
-
-        return view('categories.show', compact('items'), compact('categoryName'));
+        return view('categories.show', compact('category'));
     }
 }
