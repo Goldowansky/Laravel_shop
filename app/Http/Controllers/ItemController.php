@@ -8,8 +8,8 @@ use App\Models\Category;
 
 class ItemController extends Controller
 {
-    public function show(Item $item)
+    public function show(Category $category, Item $item)
     {
-        return view('items.show', compact('item'));
+        return view('items.show', compact('category', 'item'));
     }
 }

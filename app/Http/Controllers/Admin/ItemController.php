@@ -7,6 +7,8 @@ use App\Http\Requests\StoreCategoryItemRequest;
 use App\Http\Requests\UpdateCategoryItemRequest;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\Photo;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -31,7 +33,13 @@ class ItemController extends Controller
 
     public function store(StoreCategoryItemRequest $request, Category $category)
     {
-        $item = $category->items()->create($request->validated());
+        $item = $category->items()->create($request->validated()); //переписати на окремі інпути
+        $item->modifications()->create(['label' => $request->input('modification')]);
+        if ($request->hasFile('photo')) {
+            $photo = $item->photos()->create(['src' => basename(Storage::putFile('public/photos',$request->file('photo')))]);
+            $item->main_photo_id = $photo->id;
+            $item->save();
+        }
 
         return redirect()->route('admin.categories.show', $category);
     }
@@ -52,6 +60,9 @@ class ItemController extends Controller
 
     public function destroy(Category $category, Item $item)
     {
+        $item->photos->each(fn($photo) => $photo->deleteFile());
+        
+        $item->photos()->delete();
         $item->delete();
         
         return redirect()->route('admin.categories.show', $category);

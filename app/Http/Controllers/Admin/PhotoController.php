@@ -11,32 +11,36 @@ use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
-    public function create(Category $category, Item $item)
-    {
-        return view('photos.admin.create', compact('category','item'));
-    }
-
     public function store(StorePhotoRequest $request, Category $category, Item $item)
     {
         $src = basename(Storage::putFile('public/photos',$request->file('photo')));
-        Photo::create([
+        $photo = Photo::create([
             'item_id' => $item->id,
             'src' => $src,
         ]);
+        if ($item->main_photo_id === null) {
+            $item->main_photo_id = $photo->id;
+            $item->save();
+        }
 
-        return redirect()->route('admin.categories.show', $category);
+        return redirect()->route('admin.categories.items.edit', ['category' => $category, 'item' => $item]);
     }
 
-    public function destroy(Photo $photo)
+    public function destroy(Category $category, Item $item, Photo $photo)
     {
+        $photoId = $photo->id;
+        $photo->deleteFile();
         $photo->delete();
-
-        return redirect()->route('admin.categories.index');
+        
+        if (($photoId === $item->main_photo_id) && ($item->photos()->isNotEmpty())) {
+            $item->main_photo_id = $item->photos()->first()->id;
+        }
+        
+        return redirect()->route('admin.categories.items.edit', ['category' => $category, 'item' => $item]);
     }
 
     public function setMain(Category $category, Item $item, Photo $photo)
     {
-        // dd($item);
         $item->main_photo_id = $photo->id;
         $item->save();
 

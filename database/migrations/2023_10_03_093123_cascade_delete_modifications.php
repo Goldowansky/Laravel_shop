@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modifications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('item_id')->constrained('items'); //constrained, певно, не обов'язково
-            $table->string('label');
-            $table->timestamps();
+        Schema::table('modifications', function (Blueprint $table) {
+            $table->unsignedBigInteger('item_id')->constrained()->cascadeOnDelete()->change();
         });
     }
 
@@ -24,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modifications');
+        //
     }
 };

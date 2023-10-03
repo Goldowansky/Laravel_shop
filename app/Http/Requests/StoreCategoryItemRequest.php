@@ -23,6 +23,7 @@ class StoreCategoryItemRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[\p{L}0-9\'\s]+$/u|unique:items',
+            'photo' => 'image|max:2048',
             'description' => 'required',
         ];
     }

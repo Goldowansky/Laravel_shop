@@ -48,6 +48,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        $category->photos->each(fn($photo) => $photo->deleteFile());
+        $category->photos()->delete();
         $category->delete();
 
         return redirect()->route('admin.categories.index');

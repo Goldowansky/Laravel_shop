@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+
+use function PHPUnit\Framework\isNull;
 
 class Item extends Model
 {
@@ -13,10 +16,7 @@ class Item extends Model
         'name',
         'description',
         'category_id',
-        // 'main_photo_id',
-    ];
-    protected $attributes = [
-        'main_photo_id' => null,
+        'main_photo_id',
     ];
 
 
@@ -29,9 +29,18 @@ class Item extends Model
     {
         return $this->hasMany(Photo::class);
     }
+
+    public function modifications()
+    {
+        return $this->hasMany(Modification::class);
+    }
     
     public function mainPhoto()
     {
         return $this->belongsTo(Photo::class, 'main_photo_id');
+    }
+    public function getPhotoUrl()
+    {
+        return $this->main_photo_id === null ? Storage::url('nophoto.jpg') : Storage::url('photos/'.$this->mainPhoto()->first()->src);
     }
 }

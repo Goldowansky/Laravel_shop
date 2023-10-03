@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
@@ -17,5 +18,13 @@ class Photo extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function deleteFile()
+    {
+        $filePath = 'public/photos/'.$this->src;
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        }
     }
 }
