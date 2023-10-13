@@ -12,7 +12,8 @@ class Photo extends Model
 
     protected $fillable = [
         'src',
-        'item_id'
+        'item_id',
+        'main',
     ];
     
     public function item()

@@ -16,7 +16,6 @@ class Item extends Model
         'name',
         'description',
         'category_id',
-        'main_photo_id',
     ];
 
 
@@ -37,10 +36,10 @@ class Item extends Model
     
     public function mainPhoto()
     {
-        return $this->belongsTo(Photo::class, 'main_photo_id');
+        return $this->hasOne(Photo::class)->where('main',true);
     }
     public function getPhotoUrl()
     {
-        return $this->main_photo_id === null ? Storage::url('nophoto.jpg') : Storage::url('photos/'.$this->mainPhoto()->first()->src);
+        return $this->mainPhoto === null ? Storage::url('nophoto.jpg') : Storage::url('photos/'.$this->mainPhoto->src);
     }
 }

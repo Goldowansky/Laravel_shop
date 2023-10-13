@@ -10,3 +10,6 @@ Route::prefix(('/user'))->name('user.')->group(function() {
 	Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 	Route::resource('categories.items', ItemController::class)->only(['show']);
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

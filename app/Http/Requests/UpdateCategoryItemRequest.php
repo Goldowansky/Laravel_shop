@@ -22,7 +22,7 @@ class UpdateCategoryItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[\p{L}0-9\'\s]+$/u',
+            'name' => 'required|regex:/^[\p{L}0-9\'\s]+$/u|unique:items',
             'description' => 'required',
         ];
     }

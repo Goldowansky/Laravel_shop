@@ -6,7 +6,7 @@
 <body>
 	<div>
 		<a href="{{ route('user.categories.index') }}">Категорії</a> >
-		<a href="{{ route('user.categories.show', compact('category'))}}">{{ $category->name}}</a>
+		<a href="{{ route('user.categories.show', compact('category')) }}">{{ $category->name}}</a>
     <h1>{{ $item->name }}</h1>
 	<div>
 	@foreach ($item->photos as $photo) 

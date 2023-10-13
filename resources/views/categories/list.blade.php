@@ -5,6 +5,9 @@
 </head>
 <body>
     <a href="/admin/categories/">Перейти в адмінку</a>
+    @error('privileges')
+    <span style="color: red;">{{ $message }}</span>
+    @enderror
     <h1>Список категорій</h1>
     <div>
         @foreach ($categories as $category)
